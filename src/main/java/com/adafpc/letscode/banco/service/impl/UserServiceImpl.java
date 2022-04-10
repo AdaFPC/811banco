@@ -2,14 +2,19 @@ package com.adafpc.letscode.banco.service.impl;
 
 import com.adafpc.letscode.banco.dto.UserRequest;
 import com.adafpc.letscode.banco.dto.UserResponse;
+import com.adafpc.letscode.banco.model.SaldoUserView;
 import com.adafpc.letscode.banco.model.User;
+import com.adafpc.letscode.banco.repository.SaldoUserViewRepository;
 import com.adafpc.letscode.banco.repository.UserRepository;
 import com.adafpc.letscode.banco.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,6 +22,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    SaldoUserViewRepository saldoUserViewRepository;
 
     @Override
     public Page<User> getAll(String nome, int page, int size) {
@@ -61,5 +68,15 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(id).orElseThrow();
 
         userRepository.delete(user);
+    }
+
+    public List<SaldoUserView> getSaldoUser(){
+        return saldoUserViewRepository.findAll();
+
+    }
+
+    @Override
+    public List<UserResponse> findByCpf(String cpf) {
+        return userRepository.findByCpf(cpf);
     }
 }
